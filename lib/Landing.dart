@@ -48,7 +48,7 @@ class _LandingState extends State<Landing> {
                   "StudyPlus"
                   ,style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.orange,
+                    color: Color(0xff674dde),
                     fontSize: 25
                 ),
                 ),
@@ -78,7 +78,7 @@ class _LandingState extends State<Landing> {
                         Navigator.pushNamed(context, "Login");
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor:  Color(0xff674dde),
                         minimumSize: Size(200, 50),
                       ),
                       child: Text("suivant",style: TextStyle(

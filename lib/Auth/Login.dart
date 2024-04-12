@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:manform/Provider/AppProvider.dart';
+import 'package:manform/SQlite/bdd.dart';
+import 'package:provider/provider.dart';
+
+import '../SQlite/data.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -10,6 +16,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   void dispose() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -35,7 +43,7 @@ class _LoginState extends State<Login> {
                 left: 10,
                 right: 10,
                 top: MediaQuery.of(context).size.height * 0.20),
-            decoration: const BoxDecoration(color: Colors.orange),
+            decoration: const BoxDecoration( color: Color(0xff674dde)),
             child: Column(
               children: [
                 Align(
@@ -58,6 +66,7 @@ class _LoginState extends State<Login> {
                       color: Colors.white,
                     ),
                     child: TextField(
+                      controller: email,
                       decoration: InputDecoration(
                           hintText: "Email",
                           hintStyle: TextStyle(fontSize: 15),
@@ -74,6 +83,7 @@ class _LoginState extends State<Login> {
                       color: Colors.white,
                     ),
                     child: TextField(
+                      controller: password,
                       decoration: InputDecoration(
                           hintText: "Mot de passe",
                           hintStyle: TextStyle(fontSize: 15),
@@ -89,8 +99,53 @@ class _LoginState extends State<Login> {
                       backgroundColor: Colors.white,
                       minimumSize: Size(200, 50),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, "Home");
+                    onPressed: () async {
+                      bool credentialsValid = false;
+                       List<Utilisateur>   Users = await DatabaseManager.getUsers();
+                      for (Utilisateur utilisateur in Users) {
+                        print("utilisateur ID  : ${utilisateur.id } Nom : ${utilisateur.nom}" );
+
+                         if (utilisateur.email == email.text.trim() && utilisateur.password == password.text.trim()) {
+                           credentialsValid = true;
+                           AppProvider appProvider = AppProvider();
+                           appProvider.updateUser(utilisateur);
+                          break; // Pas besoin de continuer à parcourir la liste
+                        }
+                      }
+
+                       if (credentialsValid) {
+
+                         if(AppProvider.utilisateurCourant.role == 2) {
+                           var clasroom = await DatabaseManager.getStudentById(AppProvider.utilisateurCourant.id!);
+                           var cours =   await DatabaseManager.getModulesForFiliere(clasroom!.idFiliere);
+
+                            List<Devoir> devoirsList = [];
+                          for(var module in cours){
+
+                            List<Devoir> devoirs = await DatabaseManager.getDevoirsForModule(module.id!);
+                            devoirsList.addAll(devoirs);
+                          }
+
+                           AppProvider().updateDevoirs(devoirsList);
+                           AppProvider().updateCours(cours);
+                           AppProvider.filiereId = clasroom.idFiliere;
+                           var projects = await DatabaseManager.getProjectsForUser(AppProvider.utilisateurCourant.id!);
+                           AppProvider().updateProjects(projects);
+                           AppProvider.notes = await DatabaseManager.getNotesForStudentFromDatabase(AppProvider.utilisateurCourant.id!);
+
+                           Navigator.pushNamed(context, "HomeEtudiant");
+                         } else if (AppProvider.utilisateurCourant.role == 1) {
+                           Fluttertoast.showToast(msg: "Prof : account ");
+
+                         }else{
+                           Fluttertoast.showToast(msg: "Admin : account");
+
+                         }
+
+                      } else {
+                         Fluttertoast.showToast(msg: "Email ou Mot de passe incorrect");
+                      }
+
                     },
                     child: Text(
                       "connexion",
