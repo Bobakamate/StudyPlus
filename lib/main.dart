@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-import 'Auth/LogIn.dart';
+import 'Auth/Login.dart';
 import 'Landing.dart';
 import 'Profil.dart';
 import 'Screens/ProEtu/Etudiant/Home.dart';
