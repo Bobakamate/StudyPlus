@@ -251,15 +251,6 @@ class DatabaseManager {
 
   }
 
-  // get the student of specific sector
-  static Future<List<Map<String, dynamic>>> getStuSec(String sec) async {
-    final Database db = await database;
-    return await db.rawQuery(
-        'SELECT * FROM utilisateurs WHERE role = 0 AND id IN (SELECT idEtudiant FROM classrooms WHERE idFiliere IN (SELECT id FROM filieres WHERE nom = ?))',
-        [sec]);
-  }
-
-
   static Future<int> insertUtilisateur(Utilisateur utilisateur) async {
     final Database db = await database;
 
