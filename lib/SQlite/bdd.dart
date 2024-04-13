@@ -251,7 +251,6 @@ class DatabaseManager {
 
   }
 
-
   static Future<int> insertUtilisateur(Utilisateur utilisateur) async {
     final Database db = await database;
 
