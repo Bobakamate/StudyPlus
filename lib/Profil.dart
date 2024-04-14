@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:manform/Provider/AppProvider.dart';
+
+
+import 'Provider/AppProvider.dart';
 
 class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
@@ -24,9 +26,14 @@ class _ProfilState extends State<Profil> {
               children: [
                 ClipOval(
 
-                  child: Image.asset("assets/images/profil.jpg",
-                    height: 100,
-                    width: 100,),
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.pushNamed(context, "EditProfil");
+                    },
+                    child: Image.asset(AppProvider.utilisateurCourant.image,
+                      height: 100,
+                      width: 100,),
+                  )
                 ),
                 SizedBox(height: 20,),
                 Text(AppProvider.utilisateurCourant.nom ,
@@ -46,10 +53,15 @@ class _ProfilState extends State<Profil> {
                           children: [
                             Icon(Icons.account_circle_outlined,size: 40,color: Colors.white,),
                             SizedBox(width: 20,),
-                            Text("Modifier",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18
-                            )
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.pushNamed(context, "EditProfil");
+                              },
+                               child: Text("Modifier",style: TextStyle(
+                                   color: Colors.white,
+                                   fontSize: 18
+                               ),
+    ),
                             )
                           ],
                         ),

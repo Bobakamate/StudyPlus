@@ -60,7 +60,7 @@ class _CoursState extends State<Cours> {
                 children: [
                   for (int i = startIndex; i < endIndex && i < AppProvider.cours.length; i++)
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
                       child:GestureDetector(
                         onTap: () async {
                           var prof = await DatabaseManager.getUserById(AppProvider.cours[i].profId);

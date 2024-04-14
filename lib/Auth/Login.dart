@@ -16,8 +16,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  /* TextEditingController email = TextEditingController(text: "boba@gmail.com");
+  TextEditingController password = TextEditingController(text: "boba");
+  */
+  TextEditingController email = TextEditingController(text: "admin@gmail.com");
+  TextEditingController password = TextEditingController(text: "admin");
+
   @override
   void dispose() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -132,15 +136,32 @@ class _LoginState extends State<Login> {
                            var projects = await DatabaseManager.getProjectsForUser(AppProvider.utilisateurCourant.id!);
                            AppProvider().updateProjects(projects);
                            AppProvider.notes = await DatabaseManager.getNotesForStudentFromDatabase(AppProvider.utilisateurCourant.id!);
+                           AppProvider.courChapitres = await DatabaseManager.getCoursFromDatabase();
+                           AppProvider.devoirRendue = [];
+                           for( var devoir in devoirsList){
+                             Rendue? rendue = await DatabaseManager.getRendueByIdDevoirAndIdEtudiant(devoir.id!,AppProvider.utilisateurCourant.id!);
+                             if(rendue != null){
+                               AppProvider.devoirRendue.add(rendue);
+
+                             }else{
+                               AppProvider.devoirRendue.add(Rendue( idDevoir: devoir.id!, idEtudiant: AppProvider.utilisateurCourant.id!, rendue: false));
+                             }
+
+                           }
+                           for(var i = 0 ;i<AppProvider.devoirRendue.length;i++){
+                             print(" index = $i : ${AppProvider.devoirRendue[i].rendue}");
+                           }
 
                            Navigator.pushNamed(context, "HomeEtudiant");
                          } else if (AppProvider.utilisateurCourant.role == 1) {
                            Fluttertoast.showToast(msg: "Prof : account ");
 
                          }else{
-                           Fluttertoast.showToast(msg: "Admin : account");
 
-                         }
+                               AppProvider.etudaints = await DatabaseManager.getUserByRole(2);
+                               AppProvider.profs = await DatabaseManager.getUserByRole(1);
+                               Navigator.pushNamed(context, "HomeAdmin");
+                          }
 
                       } else {
                          Fluttertoast.showToast(msg: "Email ou Mot de passe incorrect");

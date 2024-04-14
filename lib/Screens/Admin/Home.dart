@@ -2,26 +2,24 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../Provider/AppProvider.dart';
+import 'filiere.dart';
 import 'package:flutter/services.dart';
-import 'package:manform/Screens/ProEtu/Etudiant/Cours.dart';
-import 'package:manform/Screens/ProEtu/Etudiant/Devoirs.dart';
-import 'package:manform/Screens/ProEtu/Etudiant/Note.dart';
-import 'package:manform/Screens/ProEtu/Etudiant/Projet.dart';
 
-import '../../../Provider/AppProvider.dart';
+import '../../SQlite/data.dart';
 
 
-class HomeEtudiant extends StatefulWidget {
-  const HomeEtudiant({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<HomeEtudiant> createState() => _HomeEtudiantState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomeEtudiantState extends State<HomeEtudiant> {
+class _HomeState extends State<Home> {
   bool drawerIsOpen = false;
   int contentIndex = 0;
-  List<Widget> content = [Cours(),Devoirs(),Projet(),Note()];
+  List<Widget> content = [Filieres()];
   @override
   void dispose() {
     SystemChrome.setSystemUIOverlayStyle(
@@ -40,6 +38,7 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
             statusBarIconBrightness: Brightness.light
         )
     );
+
     return Stack(
       children: [
         Container(
@@ -58,32 +57,10 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
                     contentIndex = 0;
                     drawerIsOpen = !drawerIsOpen;
                   });
-                       },
-                child: MenuItemBuilder("Cours",Icon(Icons.home)),
+                },
+                child: MenuItemBuilder("IDAI",Icon(Icons.add)),
               ),
               const SizedBox(height: 18,),
-              GestureDetector(
-                onTap:(){
-                  setState(() {
-                    contentIndex = 1;
-                    drawerIsOpen = !drawerIsOpen;
-                  });
-                },
-                child: MenuItemBuilder("Devoirs",Icon(Icons.home_work)),
-              ),
-
-
-
-              const SizedBox(height: 18,),
-              GestureDetector(
-                onTap:(){
-                  setState(() {
-                    contentIndex = 3;
-                    drawerIsOpen = !drawerIsOpen;
-                  });
-                },
-                child: MenuItemBuilder("Note",Icon(Icons.school)),
-              ),
 
 
             ],
@@ -92,10 +69,10 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
         AnimatedContainer(
 
           height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20 ,left: 10,right: 10),
           decoration:  BoxDecoration(
-               color: Color(0xff674dde),
+              color: Color(0xff674dde),
               borderRadius:drawerIsOpen ?  BorderRadius.all( Radius.circular(20)) :  BorderRadius.all( Radius.circular(0))
 
           ),

@@ -1,41 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:manform/SQlite/bdd.dart';
 import 'package:manform/SQlite/data.dart';
-import 'package:manform/Screens/Admin/main_admin.dart';
 import 'package:sqflite/sqflite.dart';
 
-class StudentsPage extends StatefulWidget {
+class ProfessorsPage extends StatefulWidget {
   final String? specialist;
-  const StudentsPage({
+  const ProfessorsPage({
     Key? key,
     String? Specialist,
   })  : specialist = Specialist,
         super(key: key);
 
   @override
-  _StudentsPageState createState() => _StudentsPageState();
+  _ProfessorsPageState createState() => _ProfessorsPageState();
 }
 
-class _StudentsPageState extends State<StudentsPage> {
-  List<Utilisateur> _students = [];
-  
-  get specialist => StudentsPage().specialist;
+class _ProfessorsPageState extends State<ProfessorsPage> {
+  List<Utilisateur> _professors = [];
 
   @override
   void initState() {
     super.initState();
-    _students = DatabaseManager.getProStu(specialist);
+    //_professors = DatabaseManager.getProStu('professor') as List<Utilisateur>;
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: _students.length,
+      itemCount: _professors.length,
       itemBuilder: (context, index) {
         return Card(
           child: ListTile(
-            title: Text(_students[index].nom),
-            //subtitle: Text(_students[index].specialty),
+            title: Text(_professors[index].nom),
+            //subtitle: Text(_professors[index].module as String),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -48,13 +45,8 @@ class _StudentsPageState extends State<StudentsPage> {
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () async {
-                    // delete from the database
-                    final Database db =
-                        await DatabaseManager.initializeDatabase();
-                    await db.delete('Utilisateur',
-                        where: 'id = ?', whereArgs: [_students[index].id]);
-                    _students = DatabaseManager.getProStu(specialist!)
-                        as List<Utilisateur>;
+                    // Implement delete functionality
+
                   },
                 ),
               ],

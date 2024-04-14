@@ -1,7 +1,8 @@
-import 'package:manform/Provider/AppProvider.dart';
-import 'package:manform/SQlite/data.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import 'data.dart';
 
 
 class DatabaseManager {
@@ -19,13 +20,13 @@ class DatabaseManager {
       join(await getDatabasesPath(), 'app_database.db'),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE utilisateurs(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, email TEXT, password TEXT, role INTEGER)",
+          "CREATE TABLE utilisateurs(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, email TEXT,image TEXT, password TEXT, role INTEGER)",
         );
         await db.execute(
           "CREATE TABLE modules(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, profId INTEGER, description TEXT, image TEXT, idFiliere INTEGER)",
         );
         await db.execute(
-          "CREATE TABLE devoirs(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, dateLimite TEXT, description TEXT, image TEXT, idModule INTEGER, rendue INTEGER)",
+          "CREATE TABLE devoirs(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, dateLimite TEXT, description TEXT, image TEXT, idModule INTEGER, rendue INTEGER, isProjet INTEGER)",
         );
         await db.execute(
           "CREATE TABLE filieres(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, semestre TEXT)",
@@ -42,6 +43,11 @@ class DatabaseManager {
         await db.execute(
           "CREATE TABLE projets(id INTEGER PRIMARY KEY AUTOINCREMENT, titre TEXT, description TEXT, image TEXT, idEtudiant INTEGER,idModule INTEGER)",
         );
+        await db.execute(
+          "CREATE TABLE rendue(id INTEGER PRIMARY KEY AUTOINCREMENT, idDevoir INTEGER, idEtudiant INTEGER, rendue INTEGER)",
+        );
+
+
       },
       version: 1,
     );
@@ -66,8 +72,19 @@ class DatabaseManager {
       Utilisateur(
         nom: 'Boba Kamate',
         email: 'boba@gmail.com',
+        image: "assets/images/profil.jpg",
         password: 'boba',
-        role: 2, // Le rôle du professeur est 2
+        role: 2,
+      ),
+    );
+    final int admin = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Administration fst',
+        email: 'admin@gmail.com',
+        image: "assets/images/profil_6.jpg",
+        password: 'admin',
+        role: 0,
+
       ),
     );
 
@@ -75,8 +92,9 @@ class DatabaseManager {
       Utilisateur(
         nom: 'Dave Wiliams',
         email: 'dave@gmail.com',
+        image: "assets/images/profil_4.jpg",
         password: 'dave',
-        role: 1, // Le rôle du professeur est 1
+        role: 1,
       ),
     );
 
@@ -84,8 +102,9 @@ class DatabaseManager {
       Utilisateur(
         nom: 'Karim El Bahri',
         email: 'karim@gmail.com',
+        image: "assets/images/profil_4.jpg",
         password: 'karim',
-        role: 1, // Le rôle du professeur est 1
+        role: 1,
       ),
     );
 
@@ -93,6 +112,7 @@ class DatabaseManager {
       Utilisateur(
         nom: 'Fatima Essaadi',
         email: 'fatima@gmail.com',
+        image: "assets/images/profil_5.jpg",
         password: 'fatima',
         role: 1, // Le rôle du professeur est 1
       ),
@@ -115,7 +135,8 @@ class DatabaseManager {
      await insertClassroom(
        Classroom(
            idEtudiant: boba,
-           idFiliere: IDAIid)
+           idFiliere: IDAIid
+       )
      );
 
     // Insérer les modules
@@ -171,6 +192,7 @@ class DatabaseManager {
       nom: "Analyse de cas pratique en résolution de problèmes",
       rendue: 0, // Non rendue
       dateLimite:  DateTime(2024, 5, 11, 23, 45),
+      isProjet: 0,
       description: "Dans ce devoir, les étudiants devront analyser un cas pratique en résolution de problèmes lié aux soft skills. Ils devront identifier les problèmes, proposer des solutions efficaces en utilisant des techniques de communication et de travail d'équipe, et justifier leurs choix. Le devoir devra inclure une analyse détaillée ainsi que des recommandations concrètes pour résoudre le problème.",
       idModule: softskil, // ID du module de la filière IDAI
     ));
@@ -178,14 +200,32 @@ class DatabaseManager {
     await insertDevoir(Devoir(
       nom: "Développement d'une application mobile avec Flutter",
       rendue: 0, // Non rendue
+      isProjet: 0,
       dateLimite: DateTime(2024, 5, 22, 23, 45), // Remplacez par la date limite appropriée
       description: "Dans ce devoir, les étudiants devront concevoir et développer une application mobile fonctionnelle en utilisant le langage de programmation Dart et le framework Flutter. L'application devra répondre à des besoins spécifiques fournis dans l'énoncé du devoir. Les étudiants devront également fournir une documentation détaillée de leur travail, y compris les choix de conception, les fonctionnalités implémentées et les tests effectués.",
       idModule: dart, // ID du module de la filière IDAI
     ));
+   int devoirdart =  await insertDevoir(Devoir(
+      nom: "Développement d'une application mobile de gestion de tâches",
+      rendue: 1, // Non rendue
+      isProjet: 1,
+      dateLimite: DateTime(2024, 5, 22, 23, 45),
+      description: "Ce devoir consiste à développer une application mobile de gestion de tâches pour aider les utilisateurs à organiser leurs activités quotidiennes. L'application doit permettre de créer, modifier et supprimer des tâches, ainsi que de définir des rappels pour les échéances importantes. Les étudiants doivent concevoir et implémenter cette application en utilisant le langage de programmation Dart et le framework Flutter.",
+      idModule: dart, // ID du module de la filière IDAI
+    ));
+   await insertRendue(
+     Rendue(
+       idDevoir: devoirdart,
+       idEtudiant: boba,
+         rendue: true
+     )
+   );
+
 
     await insertDevoir(Devoir(
       nom: "Conception et implémentation d'une base de données relationnelle",
       rendue: 0, // Non rendue
+      isProjet: 0,
       dateLimite:DateTime(2024, 5, 12, 2, 45), // Remplacez par la date limite appropriée
       description: "Dans ce devoir, les étudiants devront concevoir le schéma d'une base de données relationnelle en fonction d'un ensemble de spécifications données. Ils devront ensuite mettre en œuvre ce schéma en utilisant le langage SQL. Les étudiants seront évalués sur la clarté et la cohérence de leur conception de base de données, ainsi que sur la qualité de leur implémentation SQL. Le devoir devra être accompagné d'une documentation détaillée expliquant la structure de la base de données et justifiant les choix de conception.",
       idModule: bdd, // ID du module de la filière IDAI
@@ -204,13 +244,7 @@ class DatabaseManager {
       }
     }
 
-    int projetId = await insertProjet( Projet(
-      titre: "Développement d'une application mobile de gestion de tâches",
-      description: "Ce projet consiste à développer une application mobile de gestion de tâches pour aider les utilisateurs à organiser leurs activités quotidiennes. L'application permettra de créer, modifier et supprimer des tâches, ainsi que de définir des rappels pour les échéances importantes.",
-      image: "assets/images/mobile_app_project.png",
-      idModule : dart,
-      idEtudiant: boba, // ID de Boba
-    ));
+
 
     List<Notes> notesList = [
       Notes(
@@ -247,6 +281,129 @@ class DatabaseManager {
 
 // Insérer les notes dans la base de données
     insertNotes(notesList);
+
+
+    // Module SR Informatique
+
+
+    await insertCours(Cours(
+      nom: "Algorithmes",
+      resume: "Ce cours couvre les concepts fondamentaux des algorithmes, y compris les structures de données et les techniques de conception.",
+      idModule: srinformatique,
+    ));
+
+    await insertCours(Cours(
+      nom: "Complexité",
+      resume: "Ce cours examine la complexité des algorithmes et les méthodes pour analyser et mesurer leur efficacité.",
+      idModule: srinformatique,
+    ));
+
+    await insertCours(Cours(
+      nom: "Programmation Dynamique",
+      resume: "Ce cours explore la programmation dynamique comme une technique d'optimisation pour résoudre des problèmes récursifs.",
+      idModule: srinformatique,
+    ));
+
+
+
+    await insertCours(Cours(
+      nom: "SQL Avancé",
+      resume:
+      "Ce cours explore les fonctionnalités avancées du langage SQL pour manipuler et interroger les bases de données relationnelles.",
+      idModule: bdd,
+    ));
+
+    await insertCours(Cours(
+      nom: "NoSQL",
+      resume:
+      "Ce cours introduit les bases de données NoSQL et explore leur utilisation dans différents scénarios d'application.",
+      idModule: bdd,
+    ));
+
+    await insertCours(Cours(
+      nom: "Modélisation de Données",
+      resume:
+      "Ce cours couvre les techniques de modélisation de données pour concevoir des schémas de base de données efficaces.",
+      idModule: bdd,
+    ));
+
+
+
+    await insertCours(Cours(
+      nom: "HTML & CSS",
+      resume:
+      "Ce cours couvre les bases de HTML et CSS pour créer des pages web statiques et stylisées.",
+      idModule: devweb,
+    ));
+
+    await insertCours(Cours(
+      nom: "JavaScript",
+      resume:
+      "Ce cours explore les concepts avancés de JavaScript pour rendre les pages web interactives et dynamiques.",
+      idModule: devweb,
+    ));
+
+    await insertCours(Cours(
+      nom: "Frameworks Front-end",
+      resume:
+      "Ce cours présente les frameworks front-end modernes comme React, Angular et Vue.js pour le développement web.",
+      idModule: devweb,
+    ));
+
+
+
+    await insertCours(Cours(
+      nom: "UML",
+      resume:
+      "Ce cours présente le langage de modélisation unifié (UML) et ses différents diagrammes pour représenter des systèmes logiciels.",
+      idModule: modelisation,
+    ));
+
+    await insertCours(Cours(
+      nom: "Modélisation des Bases de Données",
+      resume:
+      "Ce cours explore les techniques de modélisation pour concevoir des bases de données efficaces.",
+      idModule: modelisation,
+    ));
+
+
+
+    await insertCours(Cours(
+      nom: "Syntaxe de Dart",
+      resume: "Ce cours présente la syntaxe de base du langage Dart.",
+      idModule: dart,
+    ));
+
+    await insertCours(Cours(
+      nom: "Programmation Orientée Objet en Dart",
+      resume:
+      "Ce cours explore les concepts de programmation orientée objet en Dart.",
+      idModule: dart,
+    ));
+
+
+
+    await insertCours(Cours(
+      nom: "Communication Interpersonnelle",
+      resume:
+      "Ce cours se concentre sur les compétences de communication verbale et non verbale.",
+      idModule: softskil,
+    ));
+
+    await insertCours(Cours(
+      nom: "Gestion du Temps",
+      resume:
+      "Ce cours explore les techniques pour gérer efficacement son temps et ses priorités.",
+      idModule: softskil,
+    ));
+
+    await insertCours(Cours(
+      nom: "Résolution de Conflits",
+      resume:
+      "Ce cours examine les stratégies pour résoudre les conflits de manière constructive.",
+      idModule: softskil,
+    ));
+
 
 
   }
@@ -340,6 +497,10 @@ class DatabaseManager {
     print('Table "utilisateurs":');
     utilisateurs.forEach((row) => print(row));
 
+    List<Map<String, dynamic>> rendue = await db.query('rendue');
+    print('Table "Rendue":');
+    rendue.forEach((row) => print(row));
+
     // Sélectionner et afficher les modules
     List<Map<String, dynamic>> modules = await db.query('modules');
     print('Table "modules":');
@@ -370,6 +531,7 @@ class DatabaseManager {
       return Utilisateur(
         id: usersMap[index]['id'],
         nom: usersMap[index]['nom'],
+        image: usersMap[index]['image'],
         email: usersMap[index]['email'],
         password: usersMap[index]['password'],
         role: usersMap[index]['role'],
@@ -426,6 +588,22 @@ class DatabaseManager {
 
     return Utilisateur.fromMap(userMaps.first);
   }
+  static Future<List<Utilisateur>> getUserByRole(int role) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> userMaps = await db.query(
+      'utilisateurs',
+      where: 'role = ?',
+      whereArgs: [role],
+    );
+
+    if (userMaps.isEmpty) {
+      return []; // Retourner une liste vide si aucun utilisateur n'est trouvé avec ce rôle
+    }
+
+    // Utiliser la méthode map pour convertir chaque élément de userMaps en un objet Utilisateur
+    return userMaps.map((userMap) => Utilisateur.fromMap(userMap)).toList();
+  }
+
   static Future<List<Devoir>> getDevoirsForModule(int idModule) async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -470,10 +648,97 @@ class DatabaseManager {
       return Notes.fromMap(maps[i]);
     });
   }
+  static Future<void> updateUserById(int id, String nom, String email, String password) async {
+    // Récupérer une référence à la base de données
+    final Database db = await database;
 
+    // Construire les données de mise à jour
+    final Map<String, dynamic> updateUser = {
+      'nom': nom,
+      'email': email,
+      'password': password,
+
+    };
+
+    // Mettre à jour l'utilisateur dans la base de données
+    await db.update(
+      'utilisateurs',
+      updateUser,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+  static Future<List<Cours>> getCoursFromDatabase() async {
+    final Database db = await database;
+
+    final List<Map<String, dynamic>> coursMaps = await db.query('cours');
+
+    // Convertir les résultats en une liste d'objets Cours
+    var courChapitres = List.generate(coursMaps.length, (i) {
+      return Cours(
+        id: coursMaps[i]['id'],
+        nom: coursMaps[i]['nom'],
+        resume: coursMaps[i]['resume'],
+        idModule: coursMaps[i]['idModule'],
+      );
+    });
+    return courChapitres;
+  }
+
+  static Future<void> updateDevoirRendue(int devoirId, int newRendueStatus) async {
+    final Database db = await database; // Assurez-vous que la fonction `database` est définie dans la même classe
+
+
+    await db.update(
+      'devoirs', // Nom de la table
+      {'rendue': newRendueStatus}, // Valeur mise à jour
+      where: 'id = ?', // Clause WHERE
+      whereArgs: [devoirId], // Arguments de la clause WHERE
+    );
+  }
+
+  static Future<int?> getFiliere(String nomFiliere) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> result = await db.query(
+      'filieres',
+      where: 'nom = ?',
+      whereArgs: [nomFiliere],
+    );
+
+    if (result.isEmpty) {
+      return null; // La filière n'existe pas dans la base de données
+    } else {
+      return result.first['id'] as int; // Retourner l'ID de la filière
+    }
+  }
+
+
+
+  static Future<int> insertRendue(Rendue rendue) async {
+    final db = await database;
+    return await db.insert(
+      'rendue',
+      rendue.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+  static  Future<Rendue?> getRendueByIdDevoirAndIdEtudiant(int idDevoir, int idEtudiant) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'rendue',
+      where: 'idDevoir = ? AND idEtudiant = ?',
+      whereArgs: [idDevoir, idEtudiant],
+    );
+    if (maps.isEmpty) {
+      return null;
+    }
+    return Rendue.fromMap(maps.first);
+  }
 
 
 }
+
+
 
 
 

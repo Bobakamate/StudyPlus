@@ -1,13 +1,15 @@
 class Utilisateur {
-  final int? id;
-  final String nom;
-  final String email;
-  final String password;
-  final int role;
+    int? id;
+      String nom;
+    String email;
+    String password;
+    int role;
+    String image;
 
   Utilisateur({
     this.id, // Rendre l'ID optionnel
     required this.nom,
+    required this.image,
     required this.email,
     required this.password,
     required this.role,
@@ -16,6 +18,7 @@ class Utilisateur {
   factory Utilisateur.fromMap(Map<String, dynamic> map) {
     return Utilisateur(
       id: map['id'],
+      image: map['image'],
       nom: map['nom'],
       email: map['email'],
       password: map['password'],
@@ -27,6 +30,7 @@ class Utilisateur {
     return {
       if (id != null) 'id': id,
       'nom': nom,
+      "image" : image,
       'email': email,
       'password': password,
       'role': role,
@@ -77,7 +81,9 @@ class Modules {
 class Devoir {
   final int? id;
   final String nom;
-  final int rendue ;
+    int rendue ;
+    int isProjet ;
+
   final DateTime dateLimite;
   final String description;
 
@@ -87,6 +93,7 @@ class Devoir {
     this.id, // Rendre l'ID optionnel
     required this.rendue,
     required this.nom,
+    required this.isProjet,
     required this.dateLimite,
     required this.description,
 
@@ -97,9 +104,9 @@ class Devoir {
     return Devoir(
       id: map['id'],
       nom: map['nom'],
+        isProjet : map['isProjet'],
       dateLimite: DateTime.parse(map['dateLimite']),
       description: map['description'],
-
       idModule: map['idModule'],
       rendue: map["rendue"],
     );
@@ -110,6 +117,7 @@ class Devoir {
       if (id != null) 'id': id,
       'nom': nom,
       "rendue" :rendue,
+      "isProjet" : isProjet,
       'dateLimite': dateLimite.toIso8601String(),
       'description': description,
 
@@ -276,4 +284,39 @@ class Projet {
       'idEtudiant': idEtudiant,
     };
   }
+
+
 }
+
+class Rendue {
+  final int? id;
+  final int idDevoir;
+  final int idEtudiant;
+  final bool rendue;
+
+  Rendue({
+     this.id,
+    required this.idDevoir,
+    required this.idEtudiant,
+    required this.rendue,
+  });
+
+  factory Rendue.fromMap(Map<String, dynamic> map) {
+    return Rendue(
+      id: map['id'],
+      idDevoir: map['idDevoir'],
+      idEtudiant: map['idEtudiant'],
+      rendue: map['rendue'] == 1, // Convertir le rendue en booléen
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'idDevoir': idDevoir,
+      'idEtudiant': idEtudiant,
+      'rendue': rendue ? 1 : 0, // Convertir le booléen en entier (0 ou 1)
+    };
+  }
+}
+

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:manform/Provider/AppProvider.dart';
 import 'package:manform/SQlite/bdd.dart';
+import 'package:manform/Screens/Admin/filiereDetail.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'Auth/Login.dart';
+import 'EditProfil.dart';
 import 'Landing.dart';
 import 'Profil.dart';
+import 'Screens/Admin/Home.dart';
 import 'Screens/ProEtu/Etudiant/Home.dart';
 import 'Screens/ProEtu/Etudiant/CoursDetail.dart';
 import 'Screens/ProEtu/Etudiant/DevoirsDetail.dart';
@@ -29,7 +32,7 @@ void main()  async {
 
 
 
-   //await DatabaseManager.clearDatabase();
+  //await DatabaseManager.clearDatabase();
   AppProvider.bddUsers = await DatabaseManager.getUsers();
   for(var user in AppProvider.bddUsers){
     print("ID  : ${user.id } Nom : ${user.nom}" );
@@ -57,20 +60,23 @@ class _StudyPlusState extends State<StudyPlus> {
   Widget build(BuildContext context) {
 
     return ChangeNotifierProvider(create:(context) => AppProvider(),
-    child: MaterialApp(
-      routes: {
-        "/":(context) => Landing(),
-        "Login":(context) => Login(),
-        "HomeEtudiant" : (context) => Home(),
-        "CoursDetail" : (context) => CoursDetail(),
-        "Profil" : (context) => Profil(),
-        "DevoirsDetail" :(context) => DevoirsDetail(),
-        "ProjetDetail" :(context) => ProjetDetail(),
-        "NoteDetail" :(context) => NoteDetail(),
-      },
-      initialRoute: "/",
-      debugShowCheckedModeBanner: false,
+      child: MaterialApp(
+        routes: {
+          "/":(context) => Landing(),
+          "Login":(context) => Login(),
+          "HomeEtudiant" : (context) => HomeEtudiant(),
+          "CoursDetail" : (context) => CoursDetail(),
+          "Profil" : (context) => Profil(),
+          "DevoirsDetail" :(context) => DevoirsDetail(),
+          "ProjetDetail" :(context) => ProjetDetail(),
+          "NoteDetail" :(context) => NoteDetail(),
+          "HomeAdmin" :(context) => Home(),
+          "FiliereDetail" :(context) => FiliereDetail(),
+          "EditProfil" :(context) => EditUserPage()
+        },
+        initialRoute: "/",
+        debugShowCheckedModeBanner: false,
 
-    ),);
+      ),);
   }
 }

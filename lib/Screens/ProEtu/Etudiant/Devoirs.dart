@@ -22,7 +22,7 @@ class _DevoirsState extends State<Devoirs> {
       child: Column(
 
           children: [
-            Text("Devoirs a Rendre",style: TextStyle(
+            Text("Devoirs et Projet  a Rendre",style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -44,6 +44,7 @@ class _DevoirsState extends State<Devoirs> {
                      AppProvider.devoirsDetail = AppProvider.devoirs[index];
                      AppProvider.devoirsDetailProf = prof!;
                      AppProvider.devoirsModule = getModule(AppProvider.devoirs[index].idModule)!;
+                     AppProvider. indexRendue = index;
 
                      Navigator.pushNamed(context, "DevoirsDetail");
                    },
@@ -59,13 +60,25 @@ class _DevoirsState extends State<Devoirs> {
                      child: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         Text( "Devoir de : "+ getModuleName(AppProvider.devoirs[index].idModule),style: TextStyle(
-                             color: Colors.black,
-                             fontWeight: FontWeight.bold,
-                             fontFamily: "Roboto",
-                             fontSize: 18,
-                             decoration: TextDecoration.none
-                         ),),SizedBox(height: 20,),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             Text(  AppProvider.devoirs[index].isProjet == 0  ? "Devoir de : " +  getModuleName(AppProvider.devoirs[index].idModule): "Projet de : " + getModuleName(AppProvider.devoirs[index].idModule),style: TextStyle(
+                                 color: Colors.black,
+                                 fontWeight: FontWeight.bold,
+                                 fontFamily: "Roboto",
+                                 fontSize: 18,
+                                 decoration: TextDecoration.none
+                             ),),
+                             Text(getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirs[index].id!).rendue  ?  "Rendue" : "non rendue",style: TextStyle(
+                                 color: getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirs[index].id!).rendue ? Colors.green : Colors.red,
+                                 fontWeight: FontWeight.bold,
+                                 fontFamily: "Roboto",
+                                 fontSize: 16,
+                                 decoration: TextDecoration.none
+                             ),)
+                           ],
+                         ),SizedBox(height: 20,),
                          Container(
                            height: 100,
                            child:
@@ -140,6 +153,12 @@ class _DevoirsState extends State<Devoirs> {
 
     // Concaténation de la date et de l'heure
     return '$day/$month/$year $hour:$minute';
+  }
+  Rendue getRendueByIdDevoirAndIdEtudiantFromList( int idDevoir) {
+    return AppProvider.devoirRendue.firstWhere(
+          (rendue) => rendue.idDevoir == idDevoir,
+
+    );
   }
 
 }
