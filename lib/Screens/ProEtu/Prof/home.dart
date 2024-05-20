@@ -50,16 +50,20 @@ class _HomeState extends State<profhome> {
 
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15,left: 10),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20,left: 10),
           decoration:  BoxDecoration(
               color: Colors.white
           ),
           child: Column(
             children: [
-             ClipRRect(
-               borderRadius: BorderRadius.circular(10),
-               child:  Image.asset("assets/images/logo_fst.png",height: 100,width: 100,),
-             ),
+              Align(
+                alignment: Alignment.topLeft,
+                child:  ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+
+                  child:  Image.asset("assets/images/logo_fst.png",height: 100,width: 100,fit: BoxFit.cover,),
+                ),
+              ),SizedBox(height: 20,),
               GestureDetector(
                 onTap:(){
                   setState(() {
