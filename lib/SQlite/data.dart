@@ -1,5 +1,5 @@
 class Utilisateur {
-    int? id;
+     int? id;
       String nom;
     String email;
     String password;
@@ -80,12 +80,12 @@ class Modules {
 
 class Devoir {
   final int? id;
-  final String nom;
+  late final String nom;
     int rendue ;
     int isProjet ;
 
-  final DateTime dateLimite;
-  final String description;
+  late final DateTime dateLimite;
+  late final String description;
 
   final int idModule;
 
@@ -186,7 +186,7 @@ class Notes {
   final int? id;
   final int idEtudiant;
   final int idModule;
-  final double note;
+  late final double note;
 
   Notes({
     this.id, // Rendre l'ID optionnel
@@ -216,8 +216,8 @@ class Notes {
 
 class Cours {
   final int? id;
-  final String nom;
-  final String resume;
+  late final String nom;
+  late final String resume;
   final int idModule;
 
   Cours({
@@ -248,8 +248,8 @@ class Cours {
 
 class Projet {
   final int? id;
-  final String titre;
-  final String description;
+  late final String titre;
+  late final String description;
   final String image;
   final int idModule ;
   final int idEtudiant;

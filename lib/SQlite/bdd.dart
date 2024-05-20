@@ -8,6 +8,12 @@ import 'data.dart';
 class DatabaseManager {
   static Database? _database;
 
+
+
+
+
+
+
   static Future<Database> get database async {
     if (_database != null) return _database!;
 
@@ -68,7 +74,7 @@ class DatabaseManager {
 
   static Future<void> initData() async {
     // Insérer les utilisateurs (professeurs)
-    final int boba = await insertUtilisateur(
+   /* final int boba = await insertUtilisateur(
       Utilisateur(
         nom: 'Boba Kamate',
         email: 'boba@gmail.com',
@@ -76,10 +82,20 @@ class DatabaseManager {
         password: 'boba',
         role: 2,
       ),
+    );*/
+    final int sara = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Sara Amhil',
+        email: 'sara@gmail.com',
+        image: "assets/images/profil_5.jpg",
+        password: 'sara',
+        role: 2,
+      ),
     );
+
     final int admin = await insertUtilisateur(
       Utilisateur(
-        nom: 'Administration fst',
+        nom: 'Administration',
         email: 'admin@gmail.com',
         image: "assets/images/profil_6.jpg",
         password: 'admin',
@@ -134,7 +150,7 @@ class DatabaseManager {
      ));
      await insertClassroom(
        Classroom(
-           idEtudiant: boba,
+           idEtudiant: sara,
            idFiliere: IDAIid
        )
      );
@@ -216,7 +232,7 @@ class DatabaseManager {
    await insertRendue(
      Rendue(
        idDevoir: devoirdart,
-       idEtudiant: boba,
+       idEtudiant: sara,
          rendue: true
      )
    );
@@ -248,32 +264,32 @@ class DatabaseManager {
 
     List<Notes> notesList = [
       Notes(
-        idEtudiant: boba,
+        idEtudiant: sara,
         idModule: softskil, // ID du module SR Informatique
         note: 18.5,
       ),
       Notes(
-        idEtudiant: boba,
+        idEtudiant: sara,
         idModule: srinformatique, // ID du module BDD
         note: 17.0,
       ),
       Notes(
-        idEtudiant: boba,
+        idEtudiant: sara,
         idModule: dart, // ID du module Dev Web
         note: 19.0,
       ),
       Notes(
-        idEtudiant: boba,
+        idEtudiant: sara,
         idModule: modelisation, // ID du module Modélisation
         note: 18.0,
       ),
       Notes(
-        idEtudiant: boba,
+        idEtudiant: sara,
         idModule: devweb, // ID du module Dart
         note: 19.5,
       ),
       Notes(
-        idEtudiant: boba,
+        idEtudiant: sara,
         idModule: bdd, // ID du module Soft Skills
         note: 17.5,
       ),
@@ -418,6 +434,15 @@ class DatabaseManager {
     );
   }
 
+  static Future<int> insertCours(Cours cours) async {
+    final Database db = await database;
+
+    return await db.insert(
+      'cours',
+      cours.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 
   static Future<int> insertModule(Modules module) async {
     final Database db = await database;
@@ -432,13 +457,21 @@ class DatabaseManager {
   static Future<int> insertDevoir(Devoir devoir) async {
     final Database db = await database;
 
-   return await db.insert(
+    return await db.insert(
       'devoirs',
       devoir.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+  static Future<List<Filiere>> getAllFilieres() async {
+    final Database db = await database;
 
+    final List<Map<String, dynamic>> maps = await db.query('filieres');
+
+    return List.generate(maps.length, (i) {
+      return Filiere.fromMap(maps[i]);
+    });
+  }
   static Future<int> insertFiliere(Filiere filiere) async {
     final Database db = await database;
 
@@ -465,16 +498,6 @@ class DatabaseManager {
     return await db.insert(
       'notes',
       notes.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  static Future<int> insertCours(Cours cours) async {
-    final Database db = await database;
-
-    return await db.insert(
-      'cours',
-      cours.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -517,6 +540,13 @@ class DatabaseManager {
     classrooms.forEach((row) => print(row));
 
     // Ajoutez d'autres tables si nécessaire
+    List<Map<String, dynamic>> cours = await db.query('cours');
+    print('Table "cours":');
+    cours.forEach((row) => print(row));
+
+    List<Map<String, dynamic>> notes = await db.query('notes');
+    print('Table "notes":');
+    notes.forEach((row) => print(row));
 
     print('Fin de la base de données.');
   }
@@ -539,9 +569,28 @@ class DatabaseManager {
     });
   }
 
+  static Future<List<Utilisateur>> getStudentsForclassroom(int idFiliere) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> studentsMap = await db.query(
+      'utilisateurs',
+      where: 'id IN (SELECT idEtudiant FROM classrooms WHERE idFiliere = ?)',
+      whereArgs: [idFiliere],
+    );
+
+    // Convertir la liste de maps en une liste d'objets Utilisateur
+    return List.generate(studentsMap.length, (index) {
+      return Utilisateur(
+        id: studentsMap[index]['id'],
+        nom: studentsMap[index]['nom'],
+        email: studentsMap[index]['email'],
+        password: studentsMap[index]['password'],
+        role: studentsMap[index]['role'],
+        image: 'assets/images/profil_5.jpg',
+      );
+    });
+  }
 
   static Future<List<Modules>> getModulesForFiliere(int idFiliere) async {
-
     final Database db = await database;
     final List<Map<String, dynamic>> moduleMaps = await db.query(
       'modules',
@@ -555,9 +604,7 @@ class DatabaseManager {
     });
   }
 
-
- static  Future<Classroom?> getStudentById(int id) async {
-
+  static Future<Classroom?> getStudentById(int id) async {
     final Database db = await database;
     final List<Map<String, dynamic>> classroomMaps = await db.query(
       'classrooms',
@@ -573,8 +620,6 @@ class DatabaseManager {
   }
 
   static Future<Utilisateur?> getUserById(int id) async {
-
-
     final Database db = await database;
     final List<Map<String, dynamic>> userMaps = await db.query(
       'utilisateurs',
@@ -604,6 +649,7 @@ class DatabaseManager {
     return userMaps.map((userMap) => Utilisateur.fromMap(userMap)).toList();
   }
 
+
   static Future<List<Devoir>> getDevoirsForModule(int idModule) async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -612,12 +658,10 @@ class DatabaseManager {
       whereArgs: [idModule],
     );
 
-
     return List.generate(maps.length, (i) {
       return Devoir.fromMap(maps[i]);
     });
   }
-
 
   static Future<List<Projet>> getProjectsForUser(int userId) async {
     final Database db = await database;
@@ -632,7 +676,21 @@ class DatabaseManager {
     });
   }
 
-  static Future<List<Notes>> getNotesForStudentFromDatabase(int idEtudiant) async {
+  static Future<List<Notes>> getNotesByModule(int idModule) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'notes',
+      where: 'idModule = ?',
+      whereArgs: [idModule],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Notes.fromMap(maps[i]);
+    });
+  }
+
+  static Future<List<Notes>> getNotesForStudentFromDatabase(
+      int idEtudiant) async {
     // Ouvrir la base de données
     final Database db = await database;
 
@@ -734,11 +792,120 @@ class DatabaseManager {
     }
     return Rendue.fromMap(maps.first);
   }
+  //get all cours for a module
+  static Future<List<Cours>> getCoursForModule(int idModule) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'cours',
+      where: 'idModule = ?',
+      whereArgs: [idModule],
+    );
+    return List.generate(maps.length, (i) {
+      return Cours.fromMap(maps[i]);
+    });
+  }
 
+  //get module by prof id
+  static Future<List<Modules>> getModulesForProf(int profId) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'modules',
+      where: 'profId = ?',
+      whereArgs: [profId],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Modules.fromMap(maps[i]);
+    });
+  }
+
+  static Future<List<Projet>> getProjectsForModule(int idModule) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'projets',
+      where: 'idModule = ?',
+      whereArgs: [idModule],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Projet.fromMap(maps[i]);
+    });
+  }
+
+  static Future<void> updateCours(Cours cours) async {
+    final Database db = await database;
+
+    await db.update(
+      'cours',
+      cours.toMap(),
+      where: 'id = ?',
+      whereArgs: [cours.id],
+    );
+  }
+
+  static Future<void> deleteCours(Cours chapter) async {
+    final db = await database;
+
+    await db.delete(
+      'cours',
+      where: 'id = ?',
+      whereArgs: [chapter.id],
+    );
+  }
+
+  static Future<void> updateProjet(Projet projet) async {
+    final Database db = await database;
+
+    await db.update(
+      'projets',
+      projet.toMap(),
+      where: 'id = ?',
+      whereArgs: [projet.id],
+    );
+  }
+
+  static Future<void> deleteProjet(Projet projet) async {
+    final db = await database;
+
+    await db.delete(
+      'projets',
+      where: 'id = ?',
+      whereArgs: [projet.id],
+    );
+  }
+
+  static Future<void> updateDevoir(Devoir devoir) async {
+    final Database db = await database;
+
+    await db.update(
+      'devoirs',
+      devoir.toMap(),
+      where: 'id = ?',
+      whereArgs: [devoir.id],
+    );
+  }
+
+  static Future<void> deleteDevoir(Devoir devoir) async {
+    final db = await database;
+
+    await db.delete(
+      'devoirs',
+      where: 'id = ?',
+      whereArgs: [devoir.id],
+    );
+  }
+
+
+
+  static Future<void> updateNoteInDatabase(Notes notes, newNote) async {
+    final Database db = await database;
+
+    await db.update(
+      'notes',
+      {'note': newNote},
+      where: 'id = ?',
+      whereArgs: [notes.id],
+    );
+  }
 
 }
-
-
-
-
-

@@ -21,12 +21,19 @@ class _FilieresState extends State<Filieres> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Filiere : IDAI",style: TextStyle(
+                Text("Filiere : " + AppProvider.seletedFiliere.nom,style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     decoration: TextDecoration.none
-                ),)
+                ),),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, "AddFiliere");
+                  },
+                  child:Icon(Icons.add,size: 30,color: Colors.white,),
+
+                )
               ],
             ),
             SingleChildScrollView(

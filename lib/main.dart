@@ -10,12 +10,14 @@ import 'Auth/Login.dart';
 import 'EditProfil.dart';
 import 'Landing.dart';
 import 'Profil.dart';
+import 'Screens/Admin/AddFiliere.dart';
 import 'Screens/Admin/Home.dart';
 import 'Screens/ProEtu/Etudiant/Home.dart';
 import 'Screens/ProEtu/Etudiant/CoursDetail.dart';
 import 'Screens/ProEtu/Etudiant/DevoirsDetail.dart';
 import 'Screens/ProEtu/Etudiant/NoteDetail.dart';
 import 'Screens/ProEtu/Etudiant/ProjetDetail.dart';
+import 'Screens/ProEtu/Prof/home.dart';
 
 
 
@@ -72,7 +74,9 @@ class _StudyPlusState extends State<StudyPlus> {
           "NoteDetail" :(context) => NoteDetail(),
           "HomeAdmin" :(context) => Home(),
           "FiliereDetail" :(context) => FiliereDetail(),
-          "EditProfil" :(context) => EditUserPage()
+          "profhome" :(context) => profhome(),
+          "EditProfil" :(context) => EditUserPage(),
+          "AddFiliere" :(context) => AddFiliere(),
         },
         initialRoute: "/",
         debugShowCheckedModeBanner: false,

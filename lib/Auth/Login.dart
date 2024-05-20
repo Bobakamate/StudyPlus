@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
                 left: 10,
                 right: 10,
                 top: MediaQuery.of(context).size.height * 0.20),
-            decoration: const BoxDecoration( color: Color(0xff674dde)),
+            decoration: const BoxDecoration(color: Color(0xff674dde)),
             child: Column(
               children: [
                 Align(
@@ -105,68 +105,91 @@ class _LoginState extends State<Login> {
                     ),
                     onPressed: () async {
                       bool credentialsValid = false;
-                       List<Utilisateur>   Users = await DatabaseManager.getUsers();
+                      List<Utilisateur> Users =
+                      await DatabaseManager.getUsers();
                       for (Utilisateur utilisateur in Users) {
-                        print("utilisateur ID  : ${utilisateur.id } Nom : ${utilisateur.nom}" );
+                        print(
+                            "utilisateur ID  : ${utilisateur.id} Nom : ${utilisateur.nom}");
 
-                         if (utilisateur.email == email.text.trim() && utilisateur.password == password.text.trim()) {
-                           credentialsValid = true;
-                           AppProvider appProvider = AppProvider();
-                           appProvider.updateUser(utilisateur);
+                        if (utilisateur.email == email.text.trim() &&
+                            utilisateur.password == password.text.trim()) {
+                          credentialsValid = true;
+                          AppProvider appProvider = AppProvider();
+                          appProvider.updateUser(utilisateur);
                           break; // Pas besoin de continuer à parcourir la liste
                         }
                       }
 
-                       if (credentialsValid) {
+                      if (credentialsValid) {
+                        if (AppProvider.utilisateurCourant.role == 2) {
+                          var clasroom = await DatabaseManager.getStudentById(
+                              AppProvider.utilisateurCourant.id!);
+                          var cours =
+                          await DatabaseManager.getModulesForFiliere(
+                              clasroom!.idFiliere);
 
-                         if(AppProvider.utilisateurCourant.role == 2) {
-                           var clasroom = await DatabaseManager.getStudentById(AppProvider.utilisateurCourant.id!);
-                           var cours =   await DatabaseManager.getModulesForFiliere(clasroom!.idFiliere);
-
-                            List<Devoir> devoirsList = [];
-                          for(var module in cours){
-
-                            List<Devoir> devoirs = await DatabaseManager.getDevoirsForModule(module.id!);
+                          List<Devoir> devoirsList = [];
+                          for (var module in cours) {
+                            List<Devoir> devoirs =
+                            await DatabaseManager.getDevoirsForModule(
+                                module.id!);
                             devoirsList.addAll(devoirs);
                           }
 
-                           AppProvider().updateDevoirs(devoirsList);
-                           AppProvider().updateCours(cours);
-                           AppProvider.filiereId = clasroom.idFiliere;
-                           var projects = await DatabaseManager.getProjectsForUser(AppProvider.utilisateurCourant.id!);
-                           AppProvider().updateProjects(projects);
-                           AppProvider.notes = await DatabaseManager.getNotesForStudentFromDatabase(AppProvider.utilisateurCourant.id!);
-                           AppProvider.courChapitres = await DatabaseManager.getCoursFromDatabase();
-                           AppProvider.devoirRendue = [];
-                           for( var devoir in devoirsList){
-                             Rendue? rendue = await DatabaseManager.getRendueByIdDevoirAndIdEtudiant(devoir.id!,AppProvider.utilisateurCourant.id!);
-                             if(rendue != null){
-                               AppProvider.devoirRendue.add(rendue);
+                          AppProvider().updateDevoirs(devoirsList);
+                          AppProvider().updateCours(cours);
+                          AppProvider.filiereId = clasroom.idFiliere;
+                          var projects = await DatabaseManager.getProjectsForUser(AppProvider.utilisateurCourant.id!);
+                          AppProvider().updateProjects(projects);
+                          AppProvider.notes = await DatabaseManager.getNotesForStudentFromDatabase(AppProvider.utilisateurCourant.id!);
+                          AppProvider.courChapitres = await DatabaseManager.getCoursFromDatabase();
+                          AppProvider.devoirRendue = [];
+                          for( var devoir in devoirsList){
+                            Rendue? rendue = await DatabaseManager.getRendueByIdDevoirAndIdEtudiant(devoir.id!,AppProvider.utilisateurCourant.id!);
+                            if(rendue != null){
+                              AppProvider.devoirRendue.add(rendue);
 
-                             }else{
-                               AppProvider.devoirRendue.add(Rendue( idDevoir: devoir.id!, idEtudiant: AppProvider.utilisateurCourant.id!, rendue: false));
-                             }
+                            }else{
+                              AppProvider.devoirRendue.add(Rendue( idDevoir: devoir.id!, idEtudiant: AppProvider.utilisateurCourant.id!, rendue: false));
+                            }
 
-                           }
-                           for(var i = 0 ;i<AppProvider.devoirRendue.length;i++){
-                             print(" index = $i : ${AppProvider.devoirRendue[i].rendue}");
-                           }
-
-                           Navigator.pushNamed(context, "HomeEtudiant");
-                         } else if (AppProvider.utilisateurCourant.role == 1) {
-                           Fluttertoast.showToast(msg: "Prof : account ");
-
-                         }else{
-
-                               AppProvider.etudaints = await DatabaseManager.getUserByRole(2);
-                               AppProvider.profs = await DatabaseManager.getUserByRole(1);
-                               Navigator.pushNamed(context, "HomeAdmin");
+                          }
+                          for(var i = 0 ;i<AppProvider.devoirRendue.length;i++){
+                            print(" index = $i : ${AppProvider.devoirRendue[i].rendue}");
                           }
 
-                      } else {
-                         Fluttertoast.showToast(msg: "Email ou Mot de passe incorrect");
-                      }
+                          Navigator.pushNamed(context, "HomeEtudiant");
+                        }else if (AppProvider.utilisateurCourant.role == 1) {
+                          //prof account
+                          AppProvider.cours = await DatabaseManager.getModulesForProf(AppProvider.utilisateurCourant.id!);
+                          AppProvider.chapters = await DatabaseManager.getCoursForModule(AppProvider.cours[0].id!);
+                          AppProvider.devoirs = await DatabaseManager.getDevoirsForModule(AppProvider.cours[0].id!);
+                          AppProvider.projets = await DatabaseManager.getProjectsForModule(AppProvider.cours[0].id!);
+                          AppProvider.notes = await DatabaseManager.getNotesByModule(AppProvider.cours[0].id!);
+                          AppProvider.students = await DatabaseManager.getStudentsForclassroom(AppProvider.cours[0].idFiliere);
 
+                          AppProvider.students.forEach((element) {
+                            print("================================");
+                            print("student : ${element.nom}");
+                          });
+                          AppProvider.notes.forEach((element) {
+                            print("================================");
+                            print("note : ${element.note}");
+                          });
+
+
+                          Navigator.pushNamed(context, "profhome");
+                        }else{
+                          AppProvider.filieres = await DatabaseManager.getAllFilieres();
+                          AppProvider.seletedFiliere = AppProvider.filieres[0];
+                          AppProvider.etudaints = await DatabaseManager.getUserByRole(2);
+                          AppProvider.profs = await DatabaseManager.getUserByRole(1);
+                          Navigator.pushNamed(context, "HomeAdmin");
+                        }
+                      }
+                      else {
+                        Fluttertoast.showToast(msg: "Email ou Mot de passe incorrect");
+                      }
                     },
                     child: Text(
                       "connexion",
@@ -174,41 +197,8 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 30),
-                  height: 1,
-                  width: MediaQuery.of(context).size.width - 100,
-                  color: Colors.white,
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Pas de compte ? ",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, "SignUp");
-                        },
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(
-                              color: Colors.white,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.white),
-                        ),
-                      )
-                    ],
-                  ),
-                )
+
+
               ],
             ),
           ),

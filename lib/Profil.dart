@@ -49,19 +49,43 @@ class _ProfilState extends State<Profil> {
                       padding: EdgeInsets.only(left: 15),
                       child: GestureDetector(
 
-                        child:  Row(
+                        child:  Column(
                           children: [
-                            Icon(Icons.account_circle_outlined,size: 40,color: Colors.white,),
-                            SizedBox(width: 20,),
-                            GestureDetector(
-                              onTap: (){
-                                Navigator.pushNamed(context, "EditProfil");
-                              },
-                               child: Text("Modifier",style: TextStyle(
-                                   color: Colors.white,
-                                   fontSize: 18
-                               ),
-    ),
+                            Row(
+                              children: [
+                                Icon(Icons.account_circle_outlined,size: 40,color: Colors.white,),
+                                SizedBox(width: 20,),
+                                GestureDetector(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, "EditProfil");
+                                  },
+                                  child: Text("Modifier",style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18
+                                  ),
+                                  ),
+                                )
+                              ],
+                            ), SizedBox(height: 20,),
+                            Row(
+                              children: [
+                                Icon(Icons.logout,size: 40,color: Colors.white,),
+                                SizedBox(width: 20,),
+                                GestureDetector(
+                                  onTap:()  {
+                                   Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                              '/',
+                                    (Route<dynamic> route) => false,
+                                                         );
+                                },
+                                  child: Text("Log out",style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18
+                                  ),
+                                  ),
+                                )
+                              ],
                             )
                           ],
                         ),

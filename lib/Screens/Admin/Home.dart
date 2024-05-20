@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Provider/AppProvider.dart';
+import '../../SQlite/bdd.dart';
 import 'filiere.dart';
 import 'package:flutter/services.dart';
 
@@ -45,21 +46,47 @@ class _HomeState extends State<Home> {
 
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15,left: 10),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20,left: 10),
           decoration:  BoxDecoration(
               color: Colors.white
           ),
           child: Column(
             children: [
-              GestureDetector(
-                onTap:(){
-                  setState(() {
-                    contentIndex = 0;
-                    drawerIsOpen = !drawerIsOpen;
-                  });
-                },
-                child: MenuItemBuilder("IDAI",Icon(Icons.add)),
-              ),
+             Align(
+               alignment: Alignment.topLeft,
+               child:  ClipRRect(
+                 borderRadius: BorderRadius.circular(10),
+
+                 child:  Image.asset("assets/images/logo_fst.png",height: 100,width: 100,fit: BoxFit.cover,),
+               ),
+             ),SizedBox(height: 20,),
+             ListView.builder(
+               itemCount: AppProvider.filieres.length,
+                 shrinkWrap: true,
+                 itemBuilder: (context,index){
+               return  GestureDetector(
+                 onTap:() async{
+                   AppProvider().seletedFiliereUpdate(AppProvider.filieres[index]);
+                   setState(() {
+                     AppProvider.seletedFiliere = AppProvider.filieres[index];
+
+
+                   });
+                   if(index == 0){
+                     AppProvider.etudaints = await DatabaseManager.getUserByRole(2);
+                     AppProvider.profs = await DatabaseManager.getUserByRole(1);
+                    }else{
+                     AppProvider.profs = [];
+                     AppProvider.etudaints = [];
+                   }
+                   setState(() {
+                     contentIndex = 0;
+                     drawerIsOpen = !drawerIsOpen;
+                   });
+                 },
+                 child: MenuItemBuilder(AppProvider.filieres[index].nom,Icon(Icons.add)),
+               );
+             }),
               const SizedBox(height: 18,),
 
 
@@ -84,6 +111,7 @@ class _HomeState extends State<Home> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+
                 Row(
                   children: [
                     Align(
@@ -142,7 +170,77 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(height: 20,),
                 Container(
-                  child: content[contentIndex],
+                  child: Container(
+
+                    child: Column(
+
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Filiere : " + AppProvider.seletedFiliere.nom,style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  decoration: TextDecoration.none
+                              ),),
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.pushNamed(context, "AddFiliere");
+                                },
+                                child:Icon(Icons.add,size: 30,color: Colors.white,),
+
+                              )
+                            ],
+                          ),
+                          SingleChildScrollView(
+
+                            child:  ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 2,
+                              itemBuilder:
+                                  (BuildContext context, int index)
+                              {
+                                return  GestureDetector(
+                                  onTap: (){
+                                    if(index == 0){
+                                      AppProvider.selected = true;
+                                    }
+                                    else{
+                                      AppProvider.selected = false;
+                                    }
+                                    Navigator.pushNamed(context, "FiliereDetail");
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(7),
+                                    margin:EdgeInsets.all(7) ,
+                                    height: 120,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(index == 1 ? "Professeur" :"Etudiant",style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Roboto",
+                                          fontSize: 18,
+                                          decoration: TextDecoration.none
+                                      ),),
+                                    ),
+
+                                  ),
+                                );
+
+                              },
+                            ),
+                          )
+                        ]
+                    ),
+
+                  ),
                 )
 
 
