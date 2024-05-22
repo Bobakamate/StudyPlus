@@ -21,7 +21,7 @@ class _ProfilState extends State<Profil> {
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20 ),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Color(0xff674dde),
+            color: Color(0xff0000FF),
             child: Column(
               children: [
                 ClipOval(
@@ -59,7 +59,7 @@ class _ProfilState extends State<Profil> {
                                   onTap: (){
                                     Navigator.pushNamed(context, "EditProfil");
                                   },
-                                  child: Text("Modifier",style: TextStyle(
+                                  child: Text("Edit",style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18
                                   ),

@@ -43,30 +43,30 @@ class _ModuleCoursesState extends State<ModuleCourses> {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: Row(
-              children: [
-                Text(
-                  AppProvider.cours[0].nom,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Roboto",
-                    fontSize: 25,
-                    decoration: TextDecoration.none,
-                  ),
+            child:  Container(
+              width: MediaQuery.of(context).size.width -10,
+              child: Text(
+                AppProvider.cours[0].nom,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Roboto",
+                  fontSize: 25,
+                  decoration: TextDecoration.none,
                 ),
-                //btn for adding new course
-                Spacer(),
-                IconButton(
-                    icon: Icon(Icons.add, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        addChapter();
-                      });
-                    }),
-              ],
+              ),
             ),
-          ),
+          ),SizedBox(height: 30),
+         Align(
+           alignment: Alignment.topRight,
+           child:  IconButton(
+               icon: Icon(Icons.add, color: Colors.white),
+               onPressed: () {
+                 setState(() {
+                   addChapter();
+                 });
+               }),
+         ),
           SizedBox(height: 30),
           ListView.builder(
             shrinkWrap: true,
@@ -147,16 +147,16 @@ class _ModuleCoursesState extends State<ModuleCourses> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Ajouter un Chapitre"),
+          title: Text("Add a Chapter"),
           content: Column(
             children: [
               TextField(
                 controller: _nom,
-                decoration: InputDecoration(hintText: "Titre de chapitre"),
+                decoration: InputDecoration(hintText: "Chapter title"),
               ),
               TextField(
                 controller: _resume,
-                decoration: InputDecoration(hintText: "contenu"),
+                decoration: InputDecoration(hintText: "content"),
               ),
             ],
           ),
@@ -165,7 +165,7 @@ class _ModuleCoursesState extends State<ModuleCourses> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Annuler"),
+              child: Text("cancel"),
             ),
             TextButton(
               onPressed: () {
@@ -178,7 +178,7 @@ class _ModuleCoursesState extends State<ModuleCourses> {
                 _fetchCourses();
                 Navigator.pop(context);
               },
-              child: Text("Ajouter"),
+              child: Text("add"),
             ),
           ],
         );

@@ -55,8 +55,10 @@ class _DevoirsState extends State<Devoirs> {
           Icon(Icons.add, color: Color.fromARGB(255, 31, 31, 31)),
           SizedBox(width: 8.0),
           Text(
-            'Ajouter un devoir ou un projet',
+            'Add new homework or project',
+
             style: TextStyle(
+              decoration: TextDecoration.none,
               color: Color.fromARGB(255, 80, 80, 80),
               fontWeight: FontWeight.bold,
               fontFamily: "Roboto",
@@ -74,7 +76,7 @@ class _DevoirsState extends State<Devoirs> {
               Container(
                 margin: EdgeInsets.only(top: 20),
                 child: const Text(
-                  'Projets',
+                  'Projects',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -105,15 +107,18 @@ class _DevoirsState extends State<Devoirs> {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                "Projet : " + AppProvider.projets[index].titre,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Roboto",
-                                    fontSize: 18,
-                                    decoration: TextDecoration.none),
-                              ),
+                             Container(
+                               width:300,
+                               child:  Text(
+                                 "Project : " + AppProvider.projets[index].titre,
+                                 style: const TextStyle(
+                                     color: Colors.black,
+                                     fontWeight: FontWeight.bold,
+                                     fontFamily: "Roboto",
+                                     fontSize: 18,
+                                     decoration: TextDecoration.none),
+                               ),
+                             )
                               
                             ],
                           ),
@@ -138,7 +143,7 @@ class _DevoirsState extends State<Devoirs> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                "Titre : " + (AppProvider.projets[index].titre),
+                                "Title : " + (AppProvider.projets[index].titre),
                                 style:const  TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -180,7 +185,7 @@ class _DevoirsState extends State<Devoirs> {
               Container(
                 margin: EdgeInsets.only(top: 20),
                 child: const Text(
-                  'Devoirs',
+                  'Homeworks',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -211,14 +216,19 @@ class _DevoirsState extends State<Devoirs> {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                "Devoir : " + (AppProvider.devoirs[index].nom),
-                                style:const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Roboto",
-                                    fontSize: 18,
-                                    decoration: TextDecoration.none),
+                              Container(
+                                width: 200,
+                                child: Text(
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  "Homework : " + (AppProvider.devoirs[index].nom),
+                                  style:const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Roboto",
+                                      fontSize: 18,
+                                      decoration: TextDecoration.none),
+                                ),
                               ),
                               
                             ],
@@ -243,7 +253,7 @@ class _DevoirsState extends State<Devoirs> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("Date limite : " +formatDateWithoutMilliseconds(AppProvider.devoirs[index].dateLimite),
+                              Text("Deadline: " +formatDateWithoutMilliseconds(AppProvider.devoirs[index].dateLimite),
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,

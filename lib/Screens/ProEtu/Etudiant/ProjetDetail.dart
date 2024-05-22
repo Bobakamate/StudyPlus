@@ -34,7 +34,7 @@ class _ProjetDetailState extends State<ProjetDetail> {
                   padding: EdgeInsets.only(left: 10,
                       right: 10,top: 10),
                   decoration: BoxDecoration(
-                    color: Color(0xff674dde),
+                    color: Color(0xff0000FF),
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
 
 

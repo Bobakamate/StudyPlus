@@ -36,7 +36,7 @@ class _CoursState extends State<Cours> {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: Text("Mes Cours",style: TextStyle(
+            child: Text("My Courses",style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontFamily: "Roboto",
@@ -90,13 +90,19 @@ class _CoursState extends State<Cours> {
       children: [
         Column(
           children: [
-            Text(courname,style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Roboto",
-                fontSize: 18,
-                decoration: TextDecoration.none
-            ),),
+            Container(
+              width: 150,
+              child: Text(courname,
+                maxLines : 1 ,
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Roboto",
+                  fontSize: 18,
+                  decoration: TextDecoration.none
+              ),),
+            ),
             SizedBox(height: 10,),
             Container(
               height: 130,

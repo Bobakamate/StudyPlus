@@ -37,7 +37,7 @@ class _NotesState extends State<Bultain> {
         Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Color(0xff674dde),
+            color: Color(0xff0000FF),
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -97,7 +97,7 @@ class _NotesState extends State<Bultain> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Modifier la note"),
+          title: Text("Edit note"),
           content: TextField(
             controller: newNote,
             decoration: InputDecoration(hintText: "Note"),
@@ -107,14 +107,14 @@ class _NotesState extends State<Bultain> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Annuler"),
+              child: Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
                   Provider.of<AppProvider>(context, listen: false).updateNote(note, double.parse(newNote.text));
                   Navigator.pop(context);
               },
-              child: Text("Valider"),
+              child: Text("Validate"),
             ),
           ],
         );
@@ -128,7 +128,7 @@ class _NotesState extends State<Bultain> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Ajouter une note"),
+          title: Text("Add note"),
           content: TextField(
             controller: newNote,
             decoration: InputDecoration(hintText: "Note"),
@@ -138,7 +138,7 @@ class _NotesState extends State<Bultain> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Annuler"),
+              child: Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
@@ -151,7 +151,7 @@ class _NotesState extends State<Bultain> {
                 );
                 Navigator.pop(context);
               },
-              child: Text("Valider"),
+              child: Text("Validate"),
             ),
           ],
         );

@@ -47,13 +47,13 @@ class _LoginState extends State<Login> {
                 left: 10,
                 right: 10,
                 top: MediaQuery.of(context).size.height * 0.20),
-            decoration: const BoxDecoration(color: Color(0xff674dde)),
+            decoration: const BoxDecoration(color: Color(0xff0000FF)),
             child: Column(
               children: [
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Se connecter",
+                    "login",
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -89,7 +89,7 @@ class _LoginState extends State<Login> {
                     child: TextField(
                       controller: password,
                       decoration: InputDecoration(
-                          hintText: "Mot de passe",
+                          hintText: "password",
                           hintStyle: TextStyle(fontSize: 15),
                           border: InputBorder.none),
                     ),
@@ -192,7 +192,7 @@ class _LoginState extends State<Login> {
                       }
                     },
                     child: Text(
-                      "connexion",
+                      "connection",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),

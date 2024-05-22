@@ -57,7 +57,7 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
                 child:  ClipRRect(
                   borderRadius: BorderRadius.circular(10),
 
-                  child:  Image.asset("assets/images/logo_fst.png",height: 100,width: 100,fit: BoxFit.cover,),
+                  child:  Image.asset("assets/images/logo_fst.png",height: 170,width: 130,fit: BoxFit.cover,),
                 ),
               ),SizedBox(height: 20,),
               GestureDetector(
@@ -67,7 +67,7 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
                     drawerIsOpen = !drawerIsOpen;
                   });
                        },
-                child: MenuItemBuilder("Cours",Icon(Icons.home)),
+                child: MenuItemBuilder("courses",Icon(Icons.home)),
               ),
               const SizedBox(height: 18,),
               GestureDetector(
@@ -77,7 +77,7 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
                     drawerIsOpen = !drawerIsOpen;
                   });
                 },
-                child: MenuItemBuilder("Devoirs",Icon(Icons.home_work)),
+                child: MenuItemBuilder("Homework",Icon(Icons.home_work)),
               ),
 
 
@@ -103,7 +103,7 @@ class _HomeEtudiantState extends State<HomeEtudiant> {
             width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20 ,left: 10,right: 10),
           decoration:  BoxDecoration(
-               color: Color(0xff674dde),
+               color: Color(0xff0000FF),
               borderRadius:drawerIsOpen ?  BorderRadius.all( Radius.circular(20)) :  BorderRadius.all( Radius.circular(0))
 
           ),

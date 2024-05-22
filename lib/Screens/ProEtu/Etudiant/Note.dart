@@ -20,7 +20,7 @@ class _NoteState extends State<Note> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Mes Note",style: TextStyle(
+                Text("My Note",style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -51,7 +51,7 @@ class _NoteState extends State<Note> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Text("Semestre 5",style: TextStyle(
+                        child: Text("Semester 8",style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Roboto",

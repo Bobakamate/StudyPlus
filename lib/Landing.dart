@@ -45,10 +45,9 @@ class _LandingState extends State<Landing> {
                 alignment: Alignment.center,
                 margin: EdgeInsets.all(30),
                 child: Text(
-                  "StudyPlus"
-                  ,style: TextStyle(
+                  "StudyPlus",style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff674dde),
+                    color: Color(0xff0000FF),
                     fontSize: 25
                 ),
                 ),
@@ -60,7 +59,8 @@ class _LandingState extends State<Landing> {
                 height: 100,
                 padding: EdgeInsets.only(left: 40, right: 40),
                 child: Text(
-                  "plateforme d'éducation en ligne conçue pour les etudiants et les enseignants",
+                  textAlign: TextAlign.center,
+                  "online education platform designed for students and teachers",
                   style: TextStyle(
                       fontSize: 18
                   ),
@@ -78,10 +78,10 @@ class _LandingState extends State<Landing> {
                         Navigator.pushNamed(context, "Login");
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:  Color(0xff674dde),
+                        backgroundColor:  Color(0xff0000FF),
                         minimumSize: Size(200, 50),
                       ),
-                      child: Text("suivant",style: TextStyle(
+                      child: Text("next",style: TextStyle(
                           color: Colors.white
                       ),),
                     ),

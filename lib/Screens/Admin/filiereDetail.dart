@@ -34,7 +34,7 @@ class _FiliereDetailState extends State<FiliereDetail> {
 
       appBar: AppBar(
         title: Text(""),
-        backgroundColor:  Color(0xff674dde),
+        backgroundColor:  Color(0xff0000FF),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 25,
@@ -45,7 +45,7 @@ class _FiliereDetailState extends State<FiliereDetail> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xff674dde),
+        color: Color(0xff0000FF),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

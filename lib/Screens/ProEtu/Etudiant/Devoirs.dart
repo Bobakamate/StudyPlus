@@ -22,7 +22,7 @@ class _DevoirsState extends State<Devoirs> {
       child: Column(
 
           children: [
-            Text("Devoirs et Projet  a Rendre",style: TextStyle(
+            Text("Homework and Projects  To do",style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -63,14 +63,19 @@ class _DevoirsState extends State<Devoirs> {
                          Row(
                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                            children: [
-                             Text(  AppProvider.devoirs[index].isProjet == 0  ? "Devoir de : " +  getModuleName(AppProvider.devoirs[index].idModule): "Projet de : " + getModuleName(AppProvider.devoirs[index].idModule),style: TextStyle(
-                                 color: Colors.black,
-                                 fontWeight: FontWeight.bold,
-                                 fontFamily: "Roboto",
-                                 fontSize: 18,
-                                 decoration: TextDecoration.none
-                             ),),
-                             Text(getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirs[index].id!).rendue  ?  "Rendue" : "non rendue",style: TextStyle(
+                             Container(
+                               width: 200,
+                               child: Text( maxLines: 1 ,
+                                 overflow: TextOverflow.ellipsis,
+                                 AppProvider.devoirs[index].isProjet == 0  ? "Homework : " +  getModuleName(AppProvider.devoirs[index].idModule): "Project : " + getModuleName(AppProvider.devoirs[index].idModule),style: TextStyle(
+                                   color: Colors.black,
+                                   fontWeight: FontWeight.bold,
+                                   fontFamily: "Roboto",
+                                   fontSize: 18,
+                                   decoration: TextDecoration.none
+                               ),),
+                             ),
+                             Text(getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirs[index].id!).rendue  ?  "Rendered": "not rendered",style: TextStyle(
                                  color: getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirs[index].id!).rendue ? Colors.green : Colors.red,
                                  fontWeight: FontWeight.bold,
                                  fontFamily: "Roboto",
@@ -96,7 +101,7 @@ class _DevoirsState extends State<Devoirs> {
                            mainAxisAlignment: MainAxisAlignment.start,
                            children: [
 
-                             Text("Date limite : "+ formatDateWithoutMilliseconds(AppProvider.devoirs[index].dateLimite),style:
+                             Text("DeadLine: "+ formatDateWithoutMilliseconds(AppProvider.devoirs[index].dateLimite),style:
                              TextStyle(
                                color: Colors.black,
                                fontSize: 16,

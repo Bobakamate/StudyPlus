@@ -31,10 +31,10 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Color(0xff674dde),
+      backgroundColor:  Color(0xff0000FF),
       appBar: AppBar(
-        backgroundColor:  Color(0xff674dde),
-        title: Text("Ajouter un Devoir ou un projet",style: TextStyle(
+        backgroundColor:  Color(0xff0000FF),
+        title: Text("Add new homework or project",style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 20,
@@ -69,7 +69,7 @@ class _AddTodoState extends State<AddTodo> {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
-                child: Text('Ajouter un devoir',style: TextStyle(
+                child: Text('Add new homework',style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -100,7 +100,7 @@ class _AddTodoState extends State<AddTodo> {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
-                child: Text('Ajouter un projet',style: TextStyle(
+                child: Text('Add new Project',style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -121,13 +121,13 @@ class _AddTodoState extends State<AddTodo> {
         children: [
           TextField(
             decoration: InputDecoration(
-              hintText: "Nom du devoir",
+              hintText: "Homework name",
             ),
             controller: nom,
           ),
           TextField(
             decoration: InputDecoration(
-              hintText: "Description",
+              hintText: "Content",
             ),
             controller: description,
           ),
@@ -152,7 +152,7 @@ class _AddTodoState extends State<AddTodo> {
               widget.OnDevoiradded(newDevoir);
               Navigator.pop(context);
             },
-            child: Text("Ajouter"),
+            child: Text("Add"),
           )
         ],
       ),
@@ -165,13 +165,13 @@ class _AddTodoState extends State<AddTodo> {
         children: [
           TextField(
             decoration: InputDecoration(
-              hintText: "Nom du projet",
+              hintText: "project name",
             ),
             controller: nomProjet,
           ),
           TextField(
             decoration: InputDecoration(
-              hintText: "Description",
+              hintText: "content",
             ),
             controller: descriptionProjet,
           ),
@@ -189,7 +189,7 @@ class _AddTodoState extends State<AddTodo> {
               Provider.of<AppProvider>(context, listen: false).addProjet(newProjet);
               Navigator.pop(context);
             },
-            child: Text("Ajouter"),
+            child: Text("Add"),
           )
         ],
       ),

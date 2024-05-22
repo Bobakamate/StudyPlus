@@ -47,7 +47,7 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                   padding: EdgeInsets.only(left: 10,
                       right: 10,top: 10),
                   decoration: BoxDecoration(
-                    color: Color(0xff674dde),
+                    color: Color(0xff0000FF),
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
 
 
@@ -56,28 +56,35 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                         children: [
 
-                          Text(   AppProvider.devoirsDetail.isProjet == 0  ?   "Projet de : "  +  AppProvider.devoirsModule.nom  : "Devoir de : "+ AppProvider.devoirsModule.nom,style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
+                          Container(
+                            width: MediaQuery.of(context).size.width-30,
+                            child:Text(   AppProvider.devoirsDetail.isProjet == 0  ?   "Project  : "  +  AppProvider.devoirsModule.nom  : "Homework  : "+ AppProvider.devoirsModule.nom,style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
 
-                          Text(
-                            getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirsDetail.id!).rendue  ? "Rendue" : "Non rendue",
-                            style: TextStyle(
-                              color: getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirsDetail.id!).rendue ? Color(0xff39ff14) : Color(0xffff0040), // Vert vif pour "Rendue", Rouge vif pour "Non rendue"
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Roboto",
-                              fontSize: 16,
-                              decoration: TextDecoration.none,
-                            ),
-                          )
+                          ),
+
 
                         ],
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirsDetail.id!).rendue  ?
+                          "Rendered": "Not rendered",
+                          style: TextStyle(
+                            color: getRendueByIdDevoirAndIdEtudiantFromList(AppProvider.devoirsDetail.id!).rendue ? Color(0xff39ff14) : Color(0xffff0040), // Vert vif pour "Rendue", Rouge vif pour "Non rendue"
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Roboto",
+                            fontSize: 16,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child:  Text("prof : "+ AppProvider.devoirsDetailProf.nom,style: TextStyle(color: Colors.white,fontSize: 18),),
+                        child:  Text("Teacher : "+ AppProvider.devoirsDetailProf.nom,style: TextStyle(color: Colors.white,fontSize: 18),),
                       ),SizedBox(height: 10,),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -107,7 +114,7 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Cliquez sur 'Rendre' pour joindre un fichier et soumettre le devoir.",
+                          "Click 'Submit' to attach a file and submit the assignment.",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -117,7 +124,7 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Cliquez sur 'Télécharger' pour télécharger le devoir.",
+                          "Click 'Download' to download the assignment.",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -142,14 +149,14 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                                 children: [
                                   Container(
                                     width: MediaQuery.of(context).size.width - 100,
-                                    child:Text("Fichier contenant les détails sur le " + (AppProvider.devoirsDetail.isProjet == 0  ? "Projet" :"Devoir" ),
+                                    child:Text("File containing details about the " + (AppProvider.devoirsDetail.isProjet == 0  ? "Project" :"Homework" ),
                                       overflow :TextOverflow.ellipsis , maxLines : 1, style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
 
                                   ),
 
                                   GestureDetector(
                                     onTap: (){
-                                      Fluttertoast.showToast(msg: "Lancement du telechargeement");
+                                      Fluttertoast.showToast(msg: "Downloading...");
 
                                     },
                                     child: Icon(Icons.download),
@@ -161,7 +168,7 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                               height: 50,
                               width: MediaQuery.of(context).size.width - 10,
 
-                              child:Text("Pour compléter le " +(AppProvider.devoirsDetail.isProjet == 0  ? "Projet" :"Devoir" ) +", veuillez télécharger le fichier nécessaire en cliquant sur le lien ci-dessous. ",
+                              child:Text("To complete the " +(AppProvider.devoirsDetail.isProjet == 0  ? "Project" :"Homework" ) +", please download the necessary file by clicking the link below. ",
 
                                 overflow :TextOverflow.ellipsis,  maxLines: 2,style: TextStyle(color: Colors.black,fontSize: 16)
                                 ,),
@@ -199,7 +206,7 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                                           context, MaterialPageRoute(builder: (context) => DevoirsDetail()));
                                       Fluttertoast.showToast(msg: "Devoir rendu");
                                     } else {
-                                      Fluttertoast.showToast(msg: "Veuillez sélectionner un fichier");
+                                      Fluttertoast.showToast(msg: "Please select a file");
                                     }
                                   } else {
                                     // Si la permission est refusée
@@ -211,7 +218,7 @@ class _DevoirsDetailState extends State<DevoirsDetail> {
                                     maximumSize: Size(150, 40),
                                     minimumSize: Size(150, 40),
                                   ),
-                                  child: Text("Rendre",style: TextStyle(color: Colors.black),),),
+                                  child: Text("Submit",style: TextStyle(color: Colors.black),),),
 
                               ],
                             ),

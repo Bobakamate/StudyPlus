@@ -118,7 +118,7 @@ class DatabaseManager {
       Utilisateur(
         nom: 'Karim El Bahri',
         email: 'karim@gmail.com',
-        image: "assets/images/profil_4.jpg",
+        image: "assets/images/profil_4.jpg",//image pour un prof homme
         password: 'karim',
         role: 1,
       ),
@@ -128,7 +128,7 @@ class DatabaseManager {
       Utilisateur(
         nom: 'Fatima Essaadi',
         email: 'fatima@gmail.com',
-        image: "assets/images/profil_5.jpg",
+        image: "assets/images/profil_5.jpg",//image pour un prof femme
         password: 'fatima',
         role: 1, // Le rôle du professeur est 1
       ),
@@ -246,7 +246,7 @@ class DatabaseManager {
       description: "Dans ce devoir, les étudiants devront concevoir le schéma d'une base de données relationnelle en fonction d'un ensemble de spécifications données. Ils devront ensuite mettre en œuvre ce schéma en utilisant le langage SQL. Les étudiants seront évalués sur la clarté et la cohérence de leur conception de base de données, ainsi que sur la qualité de leur implémentation SQL. Le devoir devra être accompagné d'une documentation détaillée expliquant la structure de la base de données et justifiant les choix de conception.",
       idModule: bdd, // ID du module de la filière IDAI
     ));
-    Future<void> insertNotes(List<Notes> notes) async {
+     Future<void> insertNotes(List<Notes> notes) async {
       // Récupérer une référence à la base de données
       final Database db = await database;
 
@@ -423,6 +423,445 @@ class DatabaseManager {
 
 
   }
+
+  //insertion daata base
+
+
+
+
+
+
+  static Future<void> initDataForFirstTime() async {
+
+    final int admin = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Administration',
+        email: 'admin@gmail.com',
+        image: "assets/images/profil_6.jpg",
+        password: 'admin',
+        role: 0,
+      ),
+    );
+
+    // Insert users (students and professors)
+    final int sara = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Sara Amhil',
+        email: 'sara@gmail.com',
+        image: "assets/images/profil_5.jpg",
+        password: 'sara',
+        role: 2, // Role for student
+      ),
+    );
+
+    final int rajaaProfId = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Rajaa',
+        email: 'rajaa@gmail.com',
+        image: "assets/images/profil_5.jpg",
+        password: 'rajaa',
+        role: 1, // Role for professor
+      ),
+    );
+
+    final int elaaroubiProfId = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Elaaroubi',
+        email: 'elaaroubi@gmail.com',
+        image: "assets/images/profil_4.jpg",
+        password: 'elaaroubi',
+        role: 1,
+      ),
+    );
+
+    final int chrayahProfId = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Chrayah',
+        email: 'chrayah@gmail.com',
+        image: "assets/images/profil_4.jpg",
+        password: 'chrayah',
+        role: 1,
+      ),
+    );
+
+    final int mabroukProfId = await insertUtilisateur(
+      Utilisateur(
+        nom: 'Mabrouk',
+        email: 'mabrouk@gmail.com',
+        image: "assets/images/profil_4.jpg",
+        password: 'mabrouk',
+        role: 1,
+      ),
+    );
+
+    final int tabaaProfId1 = await insertUtilisateur(
+      Utilisateur(
+        nom: 'TABAA',
+        email: 'tabaa1@gmail.com',
+        image: "assets/images/profil_4.jpg",
+        password: 'tabaa',
+        role: 1,
+      ),
+    );
+
+    final int tabaaProfId2 = await insertUtilisateur(
+      Utilisateur(
+        nom: 'TABAA',
+        email: 'tabaa2@gmail.com',
+        image: "assets/images/profil_4.jpg",
+        password: 'tabaa',
+        role: 1,
+      ),
+    );
+
+    // Insert fields of study
+    final int masterMSIid = await insertFiliere(Filiere(
+      nom: "Master MSI",
+      semestre: "S8",
+    ));
+
+    // Insert modules with the corresponding professor
+    final int managementProjets = await insertModule(Modules(
+      nom: "Project Management",
+      description: "This module covers the principles of project management, including planning, execution, and project tracking.",
+      image: "assets/images/c1.jpg",
+      idFiliere: masterMSIid,
+      profId: rajaaProfId,
+    ));
+
+    final int gestionBudgetaire = await insertModule(Modules(
+      nom: "Budget Management",
+      description: "This module explores budgeting techniques, including planning, control, and budget analysis.",
+      image: "assets/images/c2.jpg",
+      idFiliere: masterMSIid,
+      profId: elaaroubiProfId,
+    ));
+
+    final int dataMining = await insertModule(Modules(
+      nom: "Data Mining",
+      description: "This module introduces data mining techniques and their application to extract useful information from large databases.",
+      image: "assets/images/c3.jpg",
+      idFiliere: masterMSIid,
+      profId: chrayahProfId,
+    ));
+
+    final int devmobile = await insertModule(Modules(
+      nom: "Web and Mobile Application Development",
+      description: "This module covers the technologies and tools used for developing web and mobile applications.",
+      image: "assets/images/c4.jpg",
+      idFiliere: masterMSIid,
+      profId: mabroukProfId,
+    ));
+
+    final int progiciels = await insertModule(Modules(
+      nom: "Advanced Integrated Management Software",
+      description: "This module explores integrated management software and their use in managing business processes.",
+      image: "assets/images/c5.jpg",
+      idFiliere: masterMSIid,
+      profId: tabaaProfId1,
+    ));
+
+    final int gouvernancesi = await insertModule(Modules(
+      nom: "IT Governance",
+      description: "This module covers the principles of IT governance and their importance for strategic IT management.",
+      image: "assets/images/c6.jpg",
+      idFiliere: masterMSIid,
+      profId: tabaaProfId2,
+    ));
+
+    // Insert courses for each module
+    await insertCours(Cours(
+      nom: "Introduction to Project Management",
+      resume: "The basics of project management.",
+      idModule: managementProjets,
+    ));
+
+    await insertCours(Cours(
+      nom: "Project Planning",
+      resume: "Techniques and tools for project planning.",
+      idModule: managementProjets,
+    ));
+
+    await insertCours(Cours(
+      nom: "Budget Analysis",
+      resume: "Techniques for budget analysis.",
+      idModule: gestionBudgetaire,
+    ));
+
+    await insertCours(Cours(
+      nom: "Budget Control",
+      resume: "Control and management of budgets.",
+      idModule: gestionBudgetaire,
+    ));
+
+    await insertCours(Cours(
+      nom: "Data Mining Techniques",
+      resume: "Commonly used data mining techniques.",
+      idModule: dataMining,
+    ));
+
+    await insertCours(Cours(
+      nom: "Applications of Data Mining",
+      resume: "Practical applications of data mining.",
+      idModule: dataMining,
+    ));
+
+    await insertCours(Cours(
+      nom: "Web Development",
+      resume: "Introduction to web application development.",
+      idModule: devmobile,
+    ));
+
+    await insertCours(Cours(
+      nom: "Mobile Development",
+      resume: "Introduction to mobile application development.",
+      idModule: devmobile,
+    ));
+
+    await insertCours(Cours(
+      nom: "ERP Software",
+      resume: "Introduction to integrated management software.",
+      idModule: progiciels,
+    ));
+
+    await insertCours(Cours(
+      nom: "Business Process Management",
+      resume: "Using ERP to manage business processes.",
+      idModule: progiciels,
+    ));
+
+    await insertCours(Cours(
+      nom: "Principles of IT Governance",
+      resume: "The principles of IT governance.",
+      idModule: gouvernancesi,
+    ));
+
+    await insertCours(Cours(
+      nom: "IT Governance Strategies",
+      resume: "Strategies and best practices in IT governance.",
+      idModule: gouvernancesi,
+    ));
+
+    // Insert assignments for each module
+    await insertDevoir(Devoir(
+      nom: "Final Project Management Assignment",
+      description: "Create a complete project plan.",
+      dateLimite: DateTime(2024, 5, 30),
+      idModule: managementProjets,
+      rendue: 1,
+      isProjet: 1,
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "Company Budget Analysis",
+      description: "Perform a comprehensive budget analysis.",
+      dateLimite: DateTime(2024, 5, 30),
+      idModule: gestionBudgetaire,
+      rendue: 1,
+      isProjet: 1,
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "Data Mining Case Study",
+      description: "Analyze a dataset using data mining techniques.",
+      dateLimite: DateTime(2024, 5, 30),
+      idModule: dataMining,
+      rendue: 1,
+      isProjet: 1,
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "Web Application Development",
+      description: "Develop a simple web application.",
+      dateLimite: DateTime(2024, 5, 30),
+      idModule: devmobile,
+      rendue: 1,
+      isProjet: 0,
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "ERP Implementation",
+      description: "Implement an ERP in a case study.",
+      dateLimite: DateTime(2024, 5, 30),
+      idModule: progiciels,
+      rendue: 0,
+      isProjet: 0,
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "IT Governance Audit",
+      description: "Conduct an IT governance audit.",
+      dateLimite: DateTime(2024, 5, 30),
+      idModule: gouvernancesi,
+      rendue: 0,
+      isProjet: 0,
+    ));
+
+    // Insert notes
+    List<Notes> notesList = [
+      Notes(
+        idEtudiant: sara,
+        idModule: gouvernancesi,
+        note: 18.5,
+      ),
+      Notes(
+        idEtudiant: sara,
+        idModule: progiciels,
+        note: 17.0,
+      ),
+      Notes(
+        idEtudiant: sara,
+        idModule: devmobile,
+        note: 19.0,
+      ),
+      Notes(
+        idEtudiant: sara,
+        idModule: managementProjets,
+        note: 18.0,
+      ),
+      Notes(
+        idEtudiant: sara,
+        idModule: dataMining,
+        note: 19.5,
+      ),
+      Notes(
+        idEtudiant: sara,
+        idModule: gestionBudgetaire,
+        note: 17.5,
+      ),
+    ];
+    Future<void> insertNotes(List<Notes> notes) async {
+      final Database db = await database;
+      for (var note in notes) {
+        await db.insert(
+          'notes',
+          note.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+    }
+
+    // Insert projects for each module
+    await insertDevoir(Devoir(
+      nom: "Library Management System",
+      description: "Develop a complete library management system using web technologies.",
+      dateLimite: DateTime(2024, 6, 30),
+      idModule: devmobile,
+      rendue: 1,
+      isProjet: 0, // Module ID for Web and Mobile Application Development
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "Sales Data Analysis",
+      description: "Use data mining techniques to analyze sales data and extract useful information.",
+      dateLimite: DateTime(2024, 6, 30),
+      idModule: dataMining,
+      rendue: 1,
+      isProjet: 0, // Module ID for Data Mining
+    ));
+
+    await insertDevoir(Devoir(
+      nom: "ERP Implementation for an SME",
+      description: "Set up an ERP to manage the processes of a small and medium-sized enterprise.",
+      dateLimite: DateTime(2024, 6, 30),
+      idModule: progiciels,
+      rendue: 1,
+      isProjet: 0, // Module ID for Advanced Integrated Management Software
+    ));
+
+    // Function to insert a project
+    Future<void> insertProjet(Projet projet) async {
+      final Database db = await database;
+      await db.insert(
+        'projets',
+        projet.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+    await insertClassroom(
+        Classroom(
+            idEtudiant: sara,
+            idFiliere: masterMSIid
+        )
+    );
+    List<int> studentIds = [];
+    List<String> studentNames = [
+      'Lucas Kelly',
+      'Natalie Morgan',
+      'Noah Baker',
+      'Stella Young',
+      'Alexander Rivera',
+      'Luna King'
+    ];
+    List<String> studentEmails = [
+      'lucas.kelly@gmail.com',
+      'natalie.morgan@gmail.com',
+      'noah.baker@gmail.com',
+      'stella.young@gmail.com',
+      'alexander.rivera@gmail.com',
+      'luna.king@gmail.com'
+    ];
+    List<String> studentImages = [
+      "assets/images/profil_1.jpg",
+      "assets/images/profil_2.jpg",
+      "assets/images/profil_3.jpg",
+      "assets/images/profil_4.jpg",
+      "assets/images/profil_5.jpg",
+      "assets/images/profil_6.jpg"
+    ];
+
+    for (int i = 0; i < studentNames.length; i++) {
+      final int studentId = await insertUtilisateur(
+        Utilisateur(
+          nom: studentNames[i],
+          email: studentEmails[i],
+          image: studentImages[i],
+          password: 'password', // Set a default password
+          role: 2, // Role for student
+        ),
+      );
+      studentIds.add(studentId);
+
+      await insertClassroom(
+        Classroom(
+          idEtudiant: studentId,
+          idFiliere: masterMSIid,
+        ),
+      );
+    }
+    await insertNotes(notesList);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //insertion daata
 
   static Future<int> insertUtilisateur(Utilisateur utilisateur) async {
     final Database db = await database;

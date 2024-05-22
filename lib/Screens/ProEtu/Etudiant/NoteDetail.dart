@@ -28,8 +28,8 @@ class _NoteDetailState extends State<NoteDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mes Notes"),
-        backgroundColor:  Color(0xff674dde),
+        title: Text("My Notes"),
+        backgroundColor:  Color(0xff0000FF),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 25,
@@ -40,7 +40,7 @@ class _NoteDetailState extends State<NoteDetail> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xff674dde),
+        color: Color(0xff0000FF),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

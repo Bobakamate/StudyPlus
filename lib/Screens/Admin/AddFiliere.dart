@@ -34,8 +34,8 @@ class _AddFiliereState extends State<AddFiliere> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // Position du bouton
 
       appBar: AppBar(
-        title: Text("Listes des filieres"),
-        backgroundColor:  Color(0xff674dde),
+        title: Text("Lists of sectors"),
+        backgroundColor:  Color(0xff0000FF),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 25,
@@ -46,7 +46,7 @@ class _AddFiliereState extends State<AddFiliere> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xff674dde),
+        color: Color(0xff0000FF),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -91,18 +91,18 @@ class _AddFiliereState extends State<AddFiliere> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Ajouter une nouvelle filiere'),
+          title: Text('Add new Sector'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Nom'),
+                  decoration: const InputDecoration(labelText: 'name'),
                 ),
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Semestre'),
+                  decoration: const InputDecoration(labelText: 'semester'),
                 ),
 
               ],
@@ -110,7 +110,7 @@ class _AddFiliereState extends State<AddFiliere> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Ajouter'),
+              child: const Text('add'),
               onPressed: () async {
                 String nom = _nameController.text;
                 String semester = _emailController.text;
@@ -156,7 +156,7 @@ class _AddFiliereState extends State<AddFiliere> {
               },
             ),
             TextButton(
-              child: const Text('Annuler'),
+              child: const Text('cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

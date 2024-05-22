@@ -50,7 +50,7 @@ class _CoursDetailState extends State<CoursDetail> {
                 padding: EdgeInsets.only(left: 10,
                   right: 10,top: 10),
                 decoration: BoxDecoration(
-                  color: Color(0xff674dde),
+                  color: Color(0xff0000FF),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
 
 
@@ -65,7 +65,7 @@ class _CoursDetailState extends State<CoursDetail> {
                     SizedBox(height: 10,),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child:  Text("prof : "+ AppProvider.coursDetailProf.nom,style: TextStyle(color: Colors.white,fontSize: 18),),
+                      child:  Text("Teacher : "+ AppProvider.coursDetailProf.nom,style: TextStyle(color: Colors.white,fontSize: 18),),
                     ),SizedBox(height: 10,),
                     Align(
                       alignment: Alignment.centerLeft,
@@ -108,7 +108,7 @@ class _CoursDetailState extends State<CoursDetail> {
 
                                 GestureDetector(
                                   onTap: (){
-                                    Fluttertoast.showToast(msg: "Lancement du telechargeement");
+                                    Fluttertoast.showToast(msg: "downloading...");
                                     showNotification();
                                   },
                                   child: Icon(Icons.download),

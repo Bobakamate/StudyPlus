@@ -29,8 +29,8 @@ class _EditUserPageState extends State<EditUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-        title: Text("Modifier le profil"),
-        backgroundColor:  Color(0xff674dde),
+        title: Text("Edit profil"),
+        backgroundColor:  Color(0xff0000FF),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 25,
@@ -40,7 +40,7 @@ class _EditUserPageState extends State<EditUserPage> {
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
-        color: Color(0xff674dde),
+        color: Color(0xff0000FF),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -108,7 +108,7 @@ class _EditUserPageState extends State<EditUserPage> {
                 });
                 Navigator.pop(context);
               },
-              child: Text('Enregistrer',style: TextStyle(
+              child: Text('save',style: TextStyle(
                 color: Colors.black
               ),),
             ),

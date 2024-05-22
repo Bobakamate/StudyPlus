@@ -28,7 +28,7 @@ void main()  async {
   var pref = await SharedPreferences.getInstance();
   var isFirstRunning = pref.getBool("FirstRunning");
   if (isFirstRunning == null) {
-    await DatabaseManager.initData();
+    await DatabaseManager.initDataForFirstTime();
     await pref.setBool("FirstRunning", true); // Correction de la clé ici
   }
 

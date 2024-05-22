@@ -19,10 +19,10 @@ class _addcoursState extends State<addcours> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff674dde),
+      backgroundColor: Color(0xff0000FF),
       appBar: AppBar(
-        backgroundColor: Color(0xff674dde),
-        title:const Text("Ajouter un cours",
+        backgroundColor: Color(0xff0000FF),
+        title:const Text("Add a course",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class _addcoursState extends State<addcours> {
           children: [
             TextField(
               decoration: InputDecoration(
-                hintText: "Nom du cours",
+                hintText: "course name",
               ),
               controller: nom,
             ),
@@ -56,7 +56,7 @@ class _addcoursState extends State<addcours> {
                 widget.onCourseAdded(newCourse);
                 Navigator.pop(context);
               },
-              child: Text("Ajouter"),
+              child: Text("Add"),
             )
           ],
         ),

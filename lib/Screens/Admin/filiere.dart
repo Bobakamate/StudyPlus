@@ -21,7 +21,7 @@ class _FilieresState extends State<Filieres> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Filiere : " + AppProvider.seletedFiliere.nom,style: TextStyle(
+                Text("Sector : " + AppProvider.seletedFiliere.nom,style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -65,7 +65,7 @@ class _FilieresState extends State<Filieres> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Text(index == 1 ? "Professeur" :"Etudiant",style: TextStyle(
+                        child: Text(index == 1 ? "Professor" :"Student",style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Roboto",
